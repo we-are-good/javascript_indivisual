@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>인기 영화를 소개합니다.</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="reset.css" />
+    <link rel="stylesheet" href="ui.css" />
+
+    <script type="module">
+
+        const options = {
+            method: 'GET',
+            headers: {
+                accept: 'application/json',
+                Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwMmZmYWFjOWE4NmE4OTk4ZDQ3MGJhZjAyYzk3NDc2YiIsInN1YiI6IjY1OWE1NTc3ODc0MWM0MDFmZTZlNGJiNiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.eiraCaCkjB-fQf9bKnbC3Fc5enxSPa6T44qx_J4Jmww'
+            }
+        };
+
+        let allMovieList = [];
+
+        const drawMovieList = movieList => {
+            const movieListElements = document.querySelector(".cardform");
+            movieListElements.innerHTML=movieList.reduce((addMovielist, movieItems) => {
+                const {id, title, overview, vote_average, poster_path} = movieItems;
+                return (addMovielist += `
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <img src="https://image.tmdb.org/t/p/w400/${poster_path}" class="img-fluid rounded-start" alt="이미지 불러오기 실패" onclick="alert('movie_ID:' + ${id})">
+
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <p class="movietitle" class="card-title">제목: ${title}</p>
+                            <p class="card-text">내용요약: ${overview}</p>
+                            <p class="card-text">평점: ${vote_average}</p>
+                            <p class="card-text"><small class="text-body-secondary">포스터 이미지 경로: ${poster_path}</small></p>
+                        </div>
+                    </div>
+                </div>
+            `);
+        }, "");
+    };
+    //카드에 추가하는 모양 만들기
+
+        let url = "https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1"
+        fetch(url, options).then(response => response.json()).then(function (data) {
+            allMovieList=data.results;
+            return drawMovieList(allMovieList)});
+        //파일 내용 중 결과만 가져오기
+
+
+        const searchMovie = event => {
+                        console.log("search movie 실행");
+            event.preventDefault();
+
+            const searchBox=document.querySelector(".search-box");
+            const keyValue=searchBox.value.toUpperCase();
+
+            const searchMovieList=allMovieList.filter(
+                ({title}) => title.toUpperCase().includes(keyValue)
+            );
+
+            searchMovieList.length>0 ? drawMovieList(searchMovieList):alert("검색 결과가 없습니다.")};
+
+        document.querySelector("#search").addEventListener("submit", searchMovie)
+
+    </script>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#"></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="#">영화장르</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                Dropdown
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li><a class="dropdown-item" href="#">액션</a></li>
+                                <li><a class="dropdown-item" href="#">스릴러</a></li>
+                                <li><a class="dropdown-item" href="#">추리</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <form class="d-flex" role="search" id="search">
+                        <input class="form-control me-2 search-box" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-success" type="submit">Search</button>
+                    </form>
+                </div>
+            </div>
+        </nav>
+
+        <div class="header_image">
+            <img src="camera.jpg" style="width: 100px">
+            <h1 id="movieforyou">당신의 영화</h1>
+        </div>
+    </header>
+
+    <main>
+        <div class="cardBody">
+            <div class="cardform" class="card mb-3" style="max-width: 540px;">
+            </div>
+        </div>
+
+    </main>
+
+</body>
+
+</html>
