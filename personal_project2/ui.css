@@ -1,0 +1,51 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Hahmlet&family=Single+Day&display=swap');
+
+* {
+    font-family: 'Hahmlet', serif;
+    font-family: 'Single Day', cursive;
+}
+
+
+.header_image {
+    height: 150px;
+    color: black;
+    background-image: url();
+    background-position: center;
+    background-size: cover;
+    margin: 10px auto 10px auto;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+#movieforyou {
+    font-size: 100px;
+}
+
+.movietitle {
+    font-size: 25px;
+    margin: 10px;
+}
+
+.cardBody {
+    width: 100hv;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 50px;
+}
+
+.searchplacehold {
+    margin: 10px;
+}
+
+#headersearch {
+    display: flex;
+    flex-direction: row;
+    align-items: right;
+    justify-content: center;
+}
